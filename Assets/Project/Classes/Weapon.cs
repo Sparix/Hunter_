@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyBox;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Project.Classes {
+    [Serializable]
     public class Weapon {
         public enum ShotResult {
             NoAmmoInBackpack,
@@ -14,16 +16,17 @@ namespace Project.Classes {
         }
 
         public const int DefaultShotDistance = 100;
-        private int _bulletsPerShot;
-        private int _amountOfBullets;
-        private int _maxBulletsInMagazine;
-        private int _currentAmmo;
-        private bool _isReloading;
-        private float _reloadTime;
-        private float _delayBetweenShots;
+        [SerializeField] private int _bulletsPerShot;
+        [SerializeField] private int _amountOfBullets;
+        [SerializeField] private int _maxBulletsInMagazine;
+        [SerializeField] private float _reloadTime;
+        [SerializeField] private float _delayBetweenShots;
+        [SerializeField] private float _spread;
+        [SerializeField] private float _maxShotDistance;
+        [SerializeField, ReadOnly] private int _currentAmmo;
+        [SerializeField, ReadOnly] private bool _isReloading;
+        public float MaxShotDistance => _maxShotDistance;
         private DateTime _lastShotTime = DateTime.MinValue;
-        private float _spread;
-        public float MaxShotDistance { get; private set; }
 
         public event Action OnShot;
         public event Action OnReloadStart;
@@ -36,7 +39,7 @@ namespace Project.Classes {
             _reloadTime = reloadTime;
             _delayBetweenShots = delayBetweenShots;
             _spread = spread;
-            MaxShotDistance = maxShotDistance;
+            _maxShotDistance = maxShotDistance;
             Reload();
         }
 

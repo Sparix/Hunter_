@@ -6,12 +6,8 @@ namespace Project.Scripts {
     public class WeaponController : MonoBehaviour {
         private const float RayShowingTime = 0.02f;
         [SerializeField] private LineRenderer lineRenderer;
-        private Weapon _weapon;
+        [SerializeField] private Weapon _weapon;
         private string _animalLayerName = "Animal";
-
-        private void Awake() {
-            _weapon = new Weapon(3, 35, 5, 2, 0.5f, 20f, 10f);
-        }
 
         private void Update() {
             HandleInput();
