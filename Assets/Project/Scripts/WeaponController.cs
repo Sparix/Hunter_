@@ -7,8 +7,10 @@ namespace Project.Scripts {
         private const float RayShowingTime = 0.02f;
         [SerializeField] private LineRenderer lineRenderer;
         private Weapon _weapon;
+        private string _animalLayerName = "Animal";
+
         private void Awake() {
-            _weapon = new Weapon(3, 35, 5, 2, 0.5f, 20f);
+            _weapon = new Weapon(3, 35, 5, 2, 0.5f, 20f, 10f);
         }
 
         private void Update() {
@@ -17,14 +19,29 @@ namespace Project.Scripts {
 
         private void HandleInput() {
             if (Input.GetButton("Fire1")) {
-                var position = transform.position;
-                var shot =_weapon.TryShoot(position, transform.rotation, out var rays);
-                if (shot == Weapon.ShotResult.ShotSuccessful) {
-                    foreach (var ray in rays) {
-                        StartCoroutine(AnimateShoot(position, ray.GetPoint(10)));
-                    }
-                }
+                Shoot();
             }
+        }
+
+        private void Shoot() {
+            var position = transform.position;
+            var shot = _weapon.TryShoot(position, transform.rotation, out var rays);
+            if (shot != Weapon.ShotResult.ShotSuccessful) return;
+            foreach (var ray in rays) {
+                StartCoroutine(CheckForHit(ray, out var hitPoint)
+                    ? AnimateShoot(ray.origin, hitPoint)
+                    : AnimateShoot(ray.origin, ray.GetPoint(_weapon.MaxShotDistance)));
+            }
+        }
+
+        private bool CheckForHit(Ray2D ray, out Vector3 hitPoint) {
+            hitPoint = Vector3.zero;
+            var hit = Physics2D.Raycast(ray.origin, ray.direction, _weapon.MaxShotDistance,
+                LayerMask.GetMask(_animalLayerName));
+            if (hit.collider == null || !hit.collider.TryGetComponent<Animal>(out var animal)) return false;
+            hitPoint = hit.point;
+            animal.Death();
+            return true;
         }
 
         private IEnumerator AnimateShoot(Vector3 startPos, Vector3 finishPos) {

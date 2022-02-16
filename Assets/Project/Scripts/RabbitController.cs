@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Project.Scripts {
-    public class RabbitController : MonoBehaviour
+    public class RabbitController : Animal
     {
         public enum RabbitState {
             Patrol,

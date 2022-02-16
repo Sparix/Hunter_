@@ -23,18 +23,20 @@ namespace Project.Classes {
         private float _delayBetweenShots;
         private DateTime _lastShotTime = DateTime.MinValue;
         private float _spread;
+        public float MaxShotDistance { get; private set; }
 
         public event Action OnShot;
         public event Action OnReloadStart;
         public event Action OnReloadEnd;
 
-        public Weapon(int bulletsPerShot, int amountOfBullets, int maxBulletsInMagazine, float reloadTime, float delayBetweenShots, float spread) {
+        public Weapon(int bulletsPerShot, int amountOfBullets, int maxBulletsInMagazine, float reloadTime, float delayBetweenShots, float spread, float maxShotDistance) {
             _bulletsPerShot = bulletsPerShot;
             _amountOfBullets = amountOfBullets;
             _maxBulletsInMagazine = maxBulletsInMagazine;
             _reloadTime = reloadTime;
             _delayBetweenShots = delayBetweenShots;
             _spread = spread;
+            MaxShotDistance = maxShotDistance;
             Reload();
         }
 
@@ -89,6 +91,9 @@ namespace Project.Classes {
             }
 
             OnShot?.Invoke();
+            if (_currentAmmo == 0) {
+                ReloadTask();
+            }
             return ShotResult.ShotSuccessful;
         }
 
