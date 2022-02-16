@@ -2,8 +2,11 @@
 using UnityEngine;
 
 namespace Project.Scripts {
-    public class Animal : MonoBehaviour, ICanBeKilled {
-        public void Death() {
+    public abstract class Animal : MonoBehaviour, ICanBeKilled {
+        public float VelocityLimit;
+        public Vector2 Velocity;
+
+        public void Die() {
             Debug.Log($"{name} killed");
             Destroy(gameObject);
         }

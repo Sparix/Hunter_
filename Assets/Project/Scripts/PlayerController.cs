@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Project.Scripts {
     public class PlayerController : MonoBehaviour, ICanBeKilled {
-        public void Death() {
+        public void Die() {
             StartCoroutine(DeathCoroutine());
         }
 

@@ -1,5 +1,5 @@
 ﻿namespace Project.Interfaces {
     public interface ICanBeKilled {
-        public void Death();
+        public void Die();
     }
 }

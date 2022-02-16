@@ -36,7 +36,7 @@ namespace Project.Scripts {
                 LayerMask.GetMask(_animalLayerName));
             if (hit.collider == null || !hit.collider.TryGetComponent<Animal>(out var animal)) return false;
             hitPoint = hit.point;
-            animal.Death();
+            animal.Die();
             return true;
         }
 
