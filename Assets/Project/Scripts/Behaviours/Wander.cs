@@ -20,7 +20,9 @@ namespace Project.Scripts.Behaviours {
                 _angle -= angleChangeStep;
             }
 
-            var futurePos = Animal.transform.position.ToVector2() + Animal.Velocity.normalized * circleDistance;
+            var velocityNormalized = Animal.Velocity.normalized;
+            var velocity = velocityNormalized.magnitude == 0 ? Animal.VelocityLimit * velocityNormalized : velocityNormalized;
+            var futurePos = Animal.transform.position.ToVector2() + velocity * circleDistance;
             var vector = new Vector2(Mathf.Cos(_angle * Mathf.Deg2Rad), Mathf.Sin(_angle * Mathf.Deg2Rad)) * circleRadius;
 
             return (futurePos + vector - transform.position.ToVector2()).normalized * Animal.VelocityLimit;

@@ -8,6 +8,7 @@ namespace Project.Scripts.Behaviours {
 
         private void Awake() {
             _field = FindObjectOfType<Field>();
+            base.Awake();
         }
 
         public override Vector2 GetDesiredVelocity() {
