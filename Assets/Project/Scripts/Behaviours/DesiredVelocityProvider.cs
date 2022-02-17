@@ -1,21 +1,14 @@
-using Project.Scripts;
 using UnityEngine;
 
-namespace IntroToGameDev.Steering.Behaviors
-{
-    using UnityEngine;
+namespace Project.Scripts.Behaviours {
+    public abstract class DesiredVelocityProvider : MonoBehaviour {
+        [SerializeField, Range(0, 3)] private float weight = 1f;
 
-    public abstract class DesiredVelocityProvider : MonoBehaviour
-    {
-        [SerializeField, Range(0,3)]
-        private float weight = 1f;
-        
         public float Weight => weight;
-        
+
         protected Animal Animal;
 
-        private void Awake()
-        {
+        private void Awake() {
             Animal = GetComponent<Animal>();
         }
 

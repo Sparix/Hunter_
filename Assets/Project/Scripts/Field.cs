@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IntroToGameDev.Steering.Behaviors {
+namespace Project.Scripts {
     public class Field : MonoBehaviour {
         [SerializeField] private Transform topLeftPoint;
         [SerializeField] private Transform bottomRightPoint;

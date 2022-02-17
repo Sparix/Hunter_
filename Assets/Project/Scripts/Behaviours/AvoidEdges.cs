@@ -1,46 +1,35 @@
-namespace IntroToGameDev.Steering.Behaviors
-{
-    using UnityEngine;
+using MyBox;
+using UnityEngine;
 
+namespace Project.Scripts.Behaviours {
     public class AvoidEdges : DesiredVelocityProvider {
-        private Field _field; 
-        private float edge = 0.05f;
+        [SerializeField] private float edge = 0.05f;
+        private Field _field;
 
         private void Awake() {
             _field = FindObjectOfType<Field>();
         }
 
-        public override Vector2 GetDesiredVelocity()
-        {
-            var cam = Camera.current;
+        public override Vector2 GetDesiredVelocity() {
             var maxSpeed = Animal.VelocityLimit;
-            var v = Animal.Velocity;
-            if (cam == null)
-            {
-                return v;
-            }
-            
-            var point = cam.WorldToViewportPoint(transform.position);
+            var point = _field.GetPositionInRelativeFormat(transform.position.ToVector2());
+            var result = Vector2.zero;
 
-            if (point.x > 1 - edge)
-            {
-                return new Vector2(-maxSpeed, 0);
-                
+            if (point.x > 1 - edge) {
+                result += new Vector2(-maxSpeed, 0);
             }
-            if (point.x < edge)
-            {
-                return new Vector2(maxSpeed, 0);
-            }
-            if (point.y > 1 - edge)
-            {
-                return new Vector2(0, -maxSpeed);
-            }
-            if (point.y < edge)
-            {
-                return new Vector2(0, maxSpeed);
+            else if (point.x < edge) {
+                result += new Vector2(maxSpeed, 0);
             }
 
-            return v;
+            if (point.y > 1 - edge) {
+                result += new Vector2(0, -maxSpeed);
+            }
+            else if (point.y < edge) {
+                result += new Vector2(0, maxSpeed);
+            }
+
+            return result.magnitude == 0 ? Animal.Velocity : result.normalized * maxSpeed;
         }
     }
 }
