@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Project.Scripts.Behaviours {
     public class Flee : DesiredVelocityProvider {
-        public List<Transform> objectsToFlee;
+        public List<Vector2> objectsToFlee;
 
         public override Vector2 GetDesiredVelocity() {
             // todo remove destroyed items
             var result = Vector2.zero;
             foreach (var objectToFlee in objectsToFlee) {
-                result += -(objectToFlee.position.ToVector2() - transform.position.ToVector2()).normalized *
+                result += -(objectToFlee - transform.position.ToVector2()).normalized *
                        Animal.VelocityLimit;
             }
 
