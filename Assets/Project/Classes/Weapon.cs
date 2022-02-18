@@ -28,6 +28,9 @@ namespace Project.Classes {
         public float MaxShotDistance => _maxShotDistance;
         private DateTime _lastShotTime = DateTime.MinValue;
 
+        public float AmountOfBullets => _amountOfBullets;
+        public float CurrentAmmo => _currentAmmo;
+
         public event Action OnShot;
         public event Action OnReloadStart;
         public event Action OnReloadEnd;
@@ -40,7 +43,7 @@ namespace Project.Classes {
             _delayBetweenShots = delayBetweenShots;
             _spread = spread;
             _maxShotDistance = maxShotDistance;
-            Reload();
+            ReloadImmediately();
         }
 
         public async Task ReloadTask() {
@@ -56,12 +59,12 @@ namespace Project.Classes {
             _isReloading = true;
             OnReloadStart?.Invoke();
             await Task.Delay((int)_reloadTime * 1000);
-            Reload();
+            ReloadImmediately();
             OnReloadEnd?.Invoke();
             _isReloading = false;
         }
 
-        private void Reload() {
+        public void ReloadImmediately() {
             _currentAmmo = _amountOfBullets >= _maxBulletsInMagazine
                 ? _maxBulletsInMagazine
                 : _amountOfBullets % _maxBulletsInMagazine;

@@ -9,6 +9,8 @@ namespace Project.Scripts {
         [SerializeField] private LineRenderer lineRenderer;
         [SerializeField] private Weapon weapon;
 
+        public Weapon Weapon => weapon;
+
         private void Awake() {
             weapon.ReloadImmediately();
         }
