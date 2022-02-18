@@ -14,7 +14,14 @@ namespace Project.Scripts
 
         private Weapon weapon => weaponController.Weapon;
 
-        private void Update()
+        void Start()
+        {
+            UpdateAmmoText();
+            weapon.OnShot += UpdateAmmoText;
+            weapon.OnReloadEnd += UpdateAmmoText;
+        }
+
+        private void UpdateAmmoText()
         {
             ammoText.text = $"{weapon.CurrentAmmo} / {weapon.AmountOfBullets - weapon.CurrentAmmo}";
         }
