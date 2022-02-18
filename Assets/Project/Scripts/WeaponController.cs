@@ -23,6 +23,11 @@ namespace Project.Scripts {
             if (Input.GetButton("Fire1")) {
                 Shoot();
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                weapon.ReloadTask();
+            }
         }
 
         private void Shoot() {
