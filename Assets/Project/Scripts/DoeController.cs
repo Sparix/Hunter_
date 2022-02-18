@@ -10,6 +10,10 @@ namespace Project.Scripts {
         [SerializeField] private float wolfsDetectRadius;
         [SerializeField] private float hunterDetectRadius;
         [SerializeField] private List<DoeController> herd;
+        
+        protected void Update() {
+            base.Update();
+        }
 
         protected override void SetCurrentState() {
             var position = transform.position;
@@ -31,7 +35,7 @@ namespace Project.Scripts {
         private void SetFleeingState(Flee fleeProvider, Wander wanderProvider, Seek seekProvider, List<Collider2D> wolfs, List<Collider2D> hunters) {
             State = states.Find(state => state.StateType == StateType.Fleeing);
             fleeProvider.Weight = fleeProvider.DefaultWeight;
-            wanderProvider.Weight = wanderProvider.DefaultWeight;
+            wanderProvider.Weight = 0;
             seekProvider.Weight = 0;
             if (wolfs.Count > 0) {
                 fleeProvider.objectsToFlee.AddRange(wolfs.Select(wolf =>
@@ -48,7 +52,7 @@ namespace Project.Scripts {
             State = states.Find(state => state.StateType == StateType.Wandering);
             fleeProvider.Weight = fleeProvider.DefaultWeight;
             seekProvider.Weight = seekProvider.DefaultWeight;
-            wanderProvider.Weight = 0;
+            wanderProvider.Weight = wanderProvider.DefaultWeight;
             var centerOfHerd = herd.Select(doe => doe.transform.position.ToVector2()).ToList().Average();
             seekProvider.objectsToFollow.Add(centerOfHerd);
             var averageSpeed = herd.Select(doe => doe.Velocity).ToList().Average();
@@ -78,6 +82,15 @@ namespace Project.Scripts {
             // huntersFilter.SetLayerMask(LayerMask.GetMask("Player"));
             Physics2D.OverlapCircle(position, hunterDetectRadius, huntersFilter, hunters);
             hunters = hunters.Where(hunter => hunter.TryGetComponent<PlayerController>(out _)).ToList();
+        }
+        
+        public override void Die() {
+            var otherDoes = herd.Except(this);
+            for (var i = 0; i < otherDoes.Count; i++) {
+                otherDoes[i].herd.Remove(this);
+            }
+
+            base.Die();
         }
     }
 }

@@ -8,6 +8,10 @@ using UnityEngine;
 namespace Project.Scripts {
     public class RabbitController : Animal {
         [SerializeField] private float detectRadius = 3f;
+        
+        protected void Update() {
+            base.Update();
+        }
 
         protected override void SetCurrentState() {
             var results = new List<Collider2D>();

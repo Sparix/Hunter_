@@ -6,7 +6,7 @@ using Project.Scripts.Behaviours;
 using UnityEngine;
 
 namespace Project.Scripts {
-    public abstract class Animal : MonoBehaviour, ICanBeKilled {
+    public abstract class Animal : CanBeKilledController {
         [SerializeField] protected Rigidbody2D rigidbody;
         [SerializeField] protected Collider2D collider;
         [SerializeField] protected List<State> states;
@@ -16,13 +16,18 @@ namespace Project.Scripts {
 
         public float VelocityLimit => State?.VelocityLimit ?? 0;
 
-        private void Awake() {
+        protected void Awake() {
             SetCurrentState();
+            base.Awake();
+        }
+
+        protected void Update() {
+            base.Update();
         }
 
         protected abstract void SetCurrentState();
 
-        public void Die() {
+        public override void Die() {
             Debug.Log($"{name} killed");
             Destroy(gameObject);
         }

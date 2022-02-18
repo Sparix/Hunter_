@@ -102,7 +102,7 @@ MonoBehaviour:
   states:
   - velocityProvider: {fileID: 1002944966746512125}
     stateType: 0
-    velocityLimit: 0.5
+    velocityLimit: 1
   - velocityProvider: {fileID: 1002944966746512123}
     stateType: 2
     velocityLimit: 2
@@ -137,7 +137,7 @@ MonoBehaviour:
   weight: 1
   circleDistance: 1
   circleRadius: 2
-  angleChangeStep: 15
+  angleChangeStep: 80
 --- !u!114 &1002944966746512123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,10 +165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833021a9b3b26b0488cc8da2c45cd147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultWeight: 2
+  defaultWeight: 0.5
   weight: 1
   objectsToFollow: []
-  arriveRadius: 0
+  arriveRadius: 0.7
 --- !u!114 &1002944966746512122
 MonoBehaviour:
   m_ObjectHideFlags: 0
